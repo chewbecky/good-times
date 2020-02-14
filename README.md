@@ -1,5 +1,6 @@
-# GoodTimes
+![alt text](https://github.com/chewbecky/good-times/blob/master/assets/repocard.png "Logo Title Text 1")
 
+# GoodTimes
 
 This plugin was created using `skpm`. For a detailed explanation on how things work, checkout the [skpm Readme](https://github.com/skpm/skpm/blob/master/README.md)._
 
