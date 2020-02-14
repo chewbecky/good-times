@@ -5,8 +5,10 @@
   "suppliesData": true,
   "commands": [
     {
-      "script": "my-command.js",
+      "script": "good-times.js",
+      "identifier": "{{ slug }}.my-command-identifier",
       "handlers": {
+        "run": "onRun",
         "actions": {
           "Startup": "onStartup",
           "Shutdown": "onShutdown",

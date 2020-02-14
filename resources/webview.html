@@ -1,10 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Good Times</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    {{ name }}
+    <div class="header">
+      <img src="./webviewImages.png" alt="Smiley face" height="42" width="42" />
+    </div>
+    <form>
+      <fieldset>
+        <legend>Goot Times</legend>
+        <p>
+          <label for="temp_intervals">Temporal Intervals</label>
+          <select id="temp_intervals">
+            <option value="date-time">Seconds</option>
+            <option value="date">Minutes</option>
+            <option value="time">Days</option>
+            <option value="time-seconds">Weeks</option>
+            <option value="time-seconds">Months</option>
+            <option value="time-seconds">Years</option>
+          </select>
+        </p>
+        <p>
+          <label for="sort">Sort</label>
+          <select id="sort">
+            <option value="new-old">New to Old</option>
+            <option value="old-new">Old to New</option>
+          </select>
+        </p>
+        <p>
+          <label for="date_format">Format</label>
+          <select id="date_format">
+            <option value="date-time">Date and Time</option>
+            <option value="date">only Date</option>
+            <option value="time">only Time</option>
+            <option value="time-seconds">Time with seconds</option>
+          </select>
+        </p>
+        <p>
+          <button>Cancel</button>
+          <button type="submit" id="magic">Magic</button>
+        </p>
+        <p id="test"></p>
+      </fieldset>
+    </form>
+    <script src="../resources_webview.js"></script>
+  </body>
 </html>
