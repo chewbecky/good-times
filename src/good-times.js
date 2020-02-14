@@ -1,46 +1,71 @@
 import sketch from "sketch";
 import util from "util";
-import BrowserWindow from "sketch-module-web-view";
-import { getWebview } from 'sketch-module-web-view/remote'
+import * as datetimeUtils from "./datetime-utils";
 
 const { DataSupplier } = sketch;
 const document = sketch.getSelectedDocument();
 var UI = require("sketch/ui");
 const timePeriods = {
-  "Week in Future": 604800,
-  "Days in Future": -86400,
-  "Hours in Future": -3600,
-  "Minutes in Future": -60,
-  "Seconds in Future": 5,
-  "Seconds ago": 5,
-  "Minutes ago": 60,
-  "Hours ago": 3600,
-  "Days ago": 86400,
-  "Week ago": 604800
+  "Seconds ago": 7000,
+  "Minutes ago": 47000,
+  "Hours ago": 3031000,
+  "Days ago": 80203000,
+  "Week ago": 600213000
 };
 
-const webviewIdentifier = "{{ slug }}.webview";
-
 export function onStartup() {
-  // To register the plugin, uncomment the relevant type:
-  DataSupplier.registerDataSupplier("public.text", "GoodTimes", "SupplyData");
-  // DataSupplier.registerDataSupplier('public.image', 'GoodTimes', 'SupplyData')
+  DataSupplier.registerDataSupplier(
+    "public.text",
+    "Date and Time",
+    "SupplyDateAndTime"
+  );
+
+  DataSupplier.registerDataSupplier(
+    "public.text",
+    "Date and Time - ISO",
+    "SupplyDateAndTimeISO"
+  );
+  DataSupplier.registerDataSupplier(
+    "public.text",
+    "Date and Time - UTC",
+    "SupplyDateAndTimeUTC"
+  );
+  DataSupplier.registerDataSupplier("public.text", "Time", "SupplyTime");
+  DataSupplier.registerDataSupplier(
+    "public.text",
+    "Time With Seconds",
+    "SupplyTimeWithSeconds"
+  );
 }
 
 export function onShutdown() {
   // Deregister the plugin
   DataSupplier.deregisterDataSuppliers();
-  const existingWebview = getWebview(webviewIdentifier);
-  if (existingWebview) {
-    existingWebview.close();
-  }
 }
-export function onSupplyData(context) {
 
-    console.log("test");
+export function onSupplyDateAndTimeISO(context) {
+  supplyDataDialog(context, datetimeUtils.createDateAndTimeISO);
+}
 
-  /* UI.getInputFromUser(
-    "Please specify the desired period of time",
+export function onSupplyDateAndTimeUTC(context) {
+  supplyDataDialog(context, datetimeUtils.createDateAndTimeUTC);
+}
+
+export function onSupplyDateAndTime(context) {
+  supplyDataDialog(context, datetimeUtils.createDateAndTime);
+}
+
+export function onSupplyTime(context) {
+  supplyDataDialog(context, datetimeUtils.createTime);
+}
+
+export function onSupplyTimeWithSeconds(context) {
+  supplyDataDialog(context, datetimeUtils.createTimeWithSeconds);
+}
+
+const supplyDataDialog = (context, dataFunction) => {
+  UI.getInputFromUser(
+    "Please specify the desired period of asdfasdf",
     {
       type: UI.INPUT_TYPE.selection,
       possibleValues: Object.keys(timePeriods)
@@ -53,8 +78,8 @@ export function onSupplyData(context) {
       if (value) {
         let dataKey = context.data.key;
         const originalDataItems = util
-            .toArray(context.data.items)
-            .map(sketch.fromNative);
+          .toArray(context.data.items)
+          .map(sketch.fromNative);
         const selection = document.selectedLayers.layers;
         let items = [];
 
@@ -72,48 +97,10 @@ export function onSupplyData(context) {
         console.log(items);
 
         items.forEach((item, index) => {
-          let data = new Date(Date.now() - (index * timePeriods[value]*1000)).toLocaleString();
+          let data = dataFunction(timePeriods[value], index);
           DataSupplier.supplyDataAtIndex(dataKey, data, item.originalIndex);
         });
       }
     }
-  );*/
-}
-
-export default function () {
-    console.log("test");
-
-  const options = {
-    identifier: webviewIdentifier,
-    width: 800,
-    height: 600,
-    show: false
-  };
-
-  const browserWindow = new BrowserWindow(options);
-
-  // only show the window when the page has loaded to avoid a white flash
-  browserWindow.once("ready-to-show", () => {
-    browserWindow.show();
-  });
-
-  const webContents = browserWindow.webContents;
-
-  // print a message when the page loads
-  webContents.on("did-finish-load", () => {
-    UI.message("UI loaded!");
-  });
-
-  // add a handler for a call from web content's javascript
-  webContents.on("nativeLog", s => {
-    UI.message(s);
-    webContents
-        .executeJavaScript(`setRandomNumber(${Math.random()})`)
-        .catch(console.error);
-  });
-
-  browserWindow.loadURL(require("../resources/webview.html"));
-
-}
-
-
+  );
+};

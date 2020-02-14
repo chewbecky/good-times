@@ -21,20 +21,10 @@
   },
   "devDependencies": {
     "@skpm/builder": "^0.7.5",
-    "sketch": "^0.2.0",
-    "css-loader": "^3.2.0",
-    "html-loader": "^0.5.5",
-    "@skpm/extract-loader": "^2.0.2"
+    "sketch": "^0.2.0"
   },
-  "resources": [
-    "resources/**/*.js"
-  ],
   "author": "chewbecca <beckybettinger@yahoo.de>",
   "dependencies": {
-    "prettier": "^1.19.1",
-    "sketch-module-web-view": "^3.4.1",
-    "css-loader": "^3.4.1",
-    "extract-loader": "^3.1.0",
-    "html-loader": "^0.5.5"
+    "prettier": "^1.19.1"
   }
 }

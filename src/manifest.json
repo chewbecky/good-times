@@ -6,18 +6,17 @@
   "commands": [
     {
       "script": "good-times.js",
-      "identifier": "{{ slug }}.my-command-identifier",
       "handlers": {
-        "run": "onRun",
         "actions": {
           "Startup": "onStartup",
           "Shutdown": "onShutdown",
-          "SupplyData": "onSupplyData"
+          "SupplyDateAndTime": "onSupplyDateAndTime",
+          "SupplyDateAndTimeISO": "onSupplyDateAndTimeISO",
+          "SupplyTime": "onSupplyTime",
+          "SupplyTimeWithSeconds": "onSupplyTimeWithSeconds",
+          "SupplyDateAndTimeUTC": "onSupplyDateAndTimeUTC"
         }
       }
     }
-  ],
-  "menu": {
-    "title": "GoodTimes"
-  }
+  ]
 }
