@@ -14,7 +14,12 @@
           "SupplyDateAndTimeISO": "onSupplyDateAndTimeISO",
           "SupplyTime": "onSupplyTime",
           "SupplyTimeWithSeconds": "onSupplyTimeWithSeconds",
-          "SupplyDateAndTimeUTC": "onSupplyDateAndTimeUTC"
+          "SupplyDateAndTimeUTC": "onSupplyDateAndTimeUTC",
+          "SupplySeconds": "onSupplySeconds",
+          "SupplyHours": "onSupplyHours",
+          "SupplyMonth": "onSupplyDateAndTimeUTC",
+          "SupplyDayAndMonth": "onSupplyDayAndMonth",
+          "SupplyWeekdays": "onSupplyWeekdays"
         }
       }
     }

@@ -13,6 +13,10 @@ const timePeriods = {
   "Week ago": 600213000
 };
 
+const descreteTimePeriods = {
+  "day": 86400000
+};
+
 export function onStartup() {
   DataSupplier.registerDataSupplier(
     "public.text",
@@ -35,6 +39,11 @@ export function onStartup() {
     "public.text",
     "Time With Seconds",
     "SupplyTimeWithSeconds"
+  );
+  DataSupplier.registerDataSupplier(
+      "public.text",
+      "Weekdays",
+      "SupplyWeekdays"
   );
 }
 
@@ -63,9 +72,13 @@ export function onSupplyTimeWithSeconds(context) {
   supplyDataDialog(context, datetimeUtils.createTimeWithSeconds);
 }
 
+export function onSupplyWeekdays(context) {
+  supplyData(context, datetimeUtils.createWeekdays, descreteTimePeriods.day);
+}
+
 const supplyDataDialog = (context, dataFunction) => {
   UI.getInputFromUser(
-    "Please specify the desired period of asdfasdf",
+    "Please specify how far apart the time data should roughly be.",
     {
       type: UI.INPUT_TYPE.selection,
       possibleValues: Object.keys(timePeriods)
@@ -76,31 +89,35 @@ const supplyDataDialog = (context, dataFunction) => {
         return;
       }
       if (value) {
-        let dataKey = context.data.key;
-        const originalDataItems = util
-          .toArray(context.data.items)
-          .map(sketch.fromNative);
-        const selection = document.selectedLayers.layers;
-        let items = [];
-
-        originalDataItems.forEach((odi, index) => {
-          let item = {};
-          item.layer = selection[index];
-          item.originalIndex = index;
-          items.push(item);
-        });
-
-        console.log(items, selection);
-
-        items.sort((a, b) => a.layer.frame.y - b.layer.frame.y);
-
-        console.log(items);
-
-        items.forEach((item, index) => {
-          let data = dataFunction(timePeriods[value], index);
-          DataSupplier.supplyDataAtIndex(dataKey, data, item.originalIndex);
-        });
+        supplyData(context, dataFunction, timePeriods[value]);
       }
     }
   );
+};
+
+const supplyData = (context, dataFunction, value) => {
+  let dataKey = context.data.key;
+  const originalDataItems = util
+    .toArray(context.data.items)
+    .map(sketch.fromNative);
+  const selection = document.selectedLayers.layers;
+  let items = [];
+
+  originalDataItems.forEach((odi, index) => {
+    let item = {};
+    item.layer = selection[index];
+    item.originalIndex = index;
+    items.push(item);
+  });
+
+  console.log(items, selection);
+
+  items.sort((a, b) => a.layer.frame.y - b.layer.frame.y);
+
+  console.log("test", items);
+
+  items.forEach((item, index) => {
+    let data = dataFunction(value, index);
+    DataSupplier.supplyDataAtIndex(dataKey, data, item.originalIndex);
+  });
 };
